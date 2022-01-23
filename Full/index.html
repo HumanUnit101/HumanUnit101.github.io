@@ -4,15 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>STALKER_Projection</title>
+    <title>STALKERS</title>
     <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="TemplateData/style.css">
   </head>
   <body class="dark">
     <div id="unity-container" class="unity-desktop">
+	  <input type="button" style="border:1px solid black; background-color: transparent; z-index: 2;" class="button" id="fullscreenbutton" value="" />
       <canvas id="unity-canvas"></canvas>
     </div>
-    
+    <div class="sound-block">
+        <audio id="audio1" src="StreamingAssets/silent.mp3" loop></audio>
+        <audio id="audio2" src="StreamingAssets/silent.mp3" loop></audio>
+        <audio id="audio3" src="StreamingAssets/silent.mp3"></audio>
+        <audio id="audio4" src="StreamingAssets/silent.mp3"></audio>
+        <audio id="audio5" src="StreamingAssets/silent.mp3" loop></audio>
+    </div>
     <div id="loading-cover" style="display:none;">
       <div id="circle-wrapper">
 		<div id="top-text">ВПЕРЕД</div>
@@ -69,12 +76,22 @@
       loadingCover.style.display = "";
       const script = document.createElement("script");
       script.src = loaderUrl;
+	  var gameInstance;
       script.onload = () => {
         createUnityInstance(canvas, config, (progress) => {
           spinner.style.display = "none";
           progressBarEmpty.style.display = "";
           progressBarFull.style.width = `${100 * progress}%`;
         }).then((unityInstance) => {
+		  gameInstance = unityInstance
+		  unityInstance.activateAudio=false;
+		  
+		    this.track1 = document.getElementById('audio1');
+			this.track2 = document.getElementById('audio2');
+			this.track3 = document.getElementById('audio3');
+			this.track4 = document.getElementById('audio4');
+            this.track5 = document.getElementById('audio5');
+		  
           loadingCover.style.display = "none";
           if (canFullscreen) {
             if (!hideFullScreenButton) {
@@ -89,6 +106,38 @@
         });
       };
       document.body.appendChild(script);
+	  const button= document.getElementById("fullscreenbutton");
+      button.addEventListener("click",activateAudio);
+      function activateAudio(){
+	    document.getElementById("audio1").play();
+        document.getElementById("audio2").play();
+        document.getElementById("audio3").play();
+        document.getElementById("audio4").play();
+        document.getElementById("audio5").play();
+        button.remove();
+        gameInstance.SendMessage("AudioManager","Activated","");
+      }
+	  
+	 window.NumberToTrack = function(number)
+    {
+        switch (number){
+            case 0:
+            return this.track1;
+            break;
+            case 1:
+            return this.track2;
+            break;
+            case 2:
+            return this.track3;
+            break;
+            case 3:
+            return this.track4;
+            break;
+            case 4:
+            return this.track5;
+            break;
+        }
+    }
     </script>
   </body>
 </html>
