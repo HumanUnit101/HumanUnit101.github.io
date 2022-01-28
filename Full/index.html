@@ -14,11 +14,16 @@
       <canvas id="unity-canvas"></canvas>
     </div>
     <div class="sound-block">
+        <audio id="audio0" src="StreamingAssets/silent.mp3" loop></audio>
         <audio id="audio1" src="StreamingAssets/silent.mp3" loop></audio>
-        <audio id="audio2" src="StreamingAssets/silent.mp3" loop></audio>
+        <audio id="audio2" src="StreamingAssets/silent.mp3"></audio>
         <audio id="audio3" src="StreamingAssets/silent.mp3"></audio>
         <audio id="audio4" src="StreamingAssets/silent.mp3"></audio>
-        <audio id="audio5" src="StreamingAssets/silent.mp3" loop></audio>
+        <audio id="audio5" src="StreamingAssets/silent.mp3"></audio>
+        <audio id="audio6" src="StreamingAssets/silent.mp3"></audio>
+        <audio id="audio7" src="StreamingAssets/silent.mp3"></audio>
+        <audio id="audio8" src="StreamingAssets/silent.mp3" loop></audio>
+        <audio id="audio9" src="StreamingAssets/silent.mp3" loop></audio>
     </div>
     <div id="loading-cover" style="display:none;">
       <div id="circle-wrapper">
@@ -85,12 +90,17 @@
         }).then((unityInstance) => {
 		  gameInstance = unityInstance
 		  unityInstance.activateAudio=false;
-		  
-		    this.track1 = document.getElementById('audio1');
-			this.track2 = document.getElementById('audio2');
-			this.track3 = document.getElementById('audio3');
-			this.track4 = document.getElementById('audio4');
-            this.track5 = document.getElementById('audio5');
+		  this.tracks=[
+      document.getElementById('audio0'),
+      document.getElementById('audio1'),
+      document.getElementById('audio2'),
+      document.getElementById('audio3'),
+      document.getElementById('audio4'),
+      document.getElementById('audio5'),
+      document.getElementById('audio6'),
+      document.getElementById('audio7'),
+      document.getElementById('audio8')
+      ]
 		  
           loadingCover.style.display = "none";
           if (canFullscreen) {
@@ -109,34 +119,23 @@
 	  const button= document.getElementById("fullscreenbutton");
       button.addEventListener("click",activateAudio);
       function activateAudio(){
-	    document.getElementById("audio1").play();
+	      document.getElementById("audio0").play();
+        document.getElementById("audio1").play();
         document.getElementById("audio2").play();
         document.getElementById("audio3").play();
         document.getElementById("audio4").play();
         document.getElementById("audio5").play();
+        document.getElementById("audio6").play();
+        document.getElementById("audio7").play();
+        document.getElementById("audio8").play();
+        document.getElementById("audio9").play();
         button.remove();
         gameInstance.SendMessage("AudioManager","Activated","");
       }
 	  
 	 window.NumberToTrack = function(number)
     {
-        switch (number){
-            case 0:
-            return this.track1;
-            break;
-            case 1:
-            return this.track2;
-            break;
-            case 2:
-            return this.track3;
-            break;
-            case 3:
-            return this.track4;
-            break;
-            case 4:
-            return this.track5;
-            break;
-        }
+      return this.tracks[number];
     }
     </script>
   </body>
