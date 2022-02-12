@@ -39,6 +39,7 @@
     </div>
     <div id="unity-fullscreen-button" style="display: none;"></div>
     <script>
+	  const build=1;
       const hideFullScreenButton = "";
       const buildUrl = "Build";
       const loaderUrl = buildUrl + "/Full.loader.js";
@@ -133,6 +134,8 @@
         document.getElementById("audioSilent").play();
         button.remove();
         gameInstance.SendMessage("AudioManager","Activated","");
+		if(build==1) gameInstance.SendMessage("VerSwitcher","Switch1");
+		else gameInstance.SendMessage("VerSwitcher","Switch2");
       }
       
       window.NumberToTrack = function(number)
