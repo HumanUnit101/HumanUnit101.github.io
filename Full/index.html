@@ -103,12 +103,12 @@
           document.getElementById('audio8'),
           document.getElementById('audio0_b')
           ]
-		  
-          document.getElementById('circle').style.animation="none";
-		  document.getElementById('top-text').style.animation="none";
-		  document.getElementById('bottom-text').style.animation="none";
-          loadingCover.style.animation="dissolve 1s linear 4s 1";
-		  loadingCover.onanimationend = ()=>{loadingCover.style.display = "none";};
+          loadingCover.style.display = "none"
+          // document.getElementById('circle').style.animation="none";
+		      // document.getElementById('top-text').style.animation="none";
+		      // document.getElementById('bottom-text').style.animation="none";
+          // loadingCover.style.animation="dissolve 1s linear 4s 1";
+		      // loadingCover.onanimationend = ()=>{loadingCover.style.display = "none";};
           if (canFullscreen) {
             if (!hideFullScreenButton) {
               fullscreenButton.style.display = "";
