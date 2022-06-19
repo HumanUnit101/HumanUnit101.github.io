@@ -36,13 +36,17 @@
 			antialias: false,
 			premultipliedAlpha: false,
 			preserveDrawingBuffer: false, 
-			extensions: [],
+			extensions: ["OES_standard_derivatives"],
 			doubleSided: false,
 		};
 		var canvas = document.querySelector('.glsl-canvas');
 		var glsl = new glsl.Canvas(canvas, options);
 		glsl.setUniforms({});
 		glsl.setTexture('u_texture_0', 'VHS - before.mp4', {
+			filtering: 'mipmap',
+			repeat: true,
+		});
+		glsl.setTexture('u_texture_1', 'noise.png', {
 			filtering: 'mipmap',
 			repeat: true,
 		});
