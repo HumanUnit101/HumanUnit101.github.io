@@ -2,8 +2,8 @@
 precision mediump float;
 #endif
 
-uniform sampler2D u_texture_0;
-uniform sampler2D u_texture_1; 
+uniform sampler2D u_texture_0; //input image
+uniform sampler2D u_texture_1; //noise
 
 uniform vec2 u_resolution;
 uniform float u_time;
@@ -81,31 +81,30 @@ void main()
     float tracking = noise*scanLines;
     tracking = smoothstep(0.5,0.6 ,tracking );
 
-    float chromaScanLinesAmp = 0.1;
+    float chromaScanLinesAmp = 0.05;
     float chromaAmp = 0.01;
 
     chromaScanLinesAmp*=smoothstep(0.4,0.8,scanLinesMask);
-    chromaScanLinesAmp+=0.01;
 
     vec2 one = vec2(1.0,0.0);
 
     //шум для более плавной абберации от трекинга
-    float dither = hash21(uv+u_time);   //(0.0,1.0)
-    float ditherR = dither*0.5+0.5;     //(0.5,1.0)
-    float ditherG = dither*0.5;         //(0.0,0.5)
+    float dither = hash21(fract(uv+u_time))*0.333;
+    float ditherR = dither+0.666;     
+    float ditherG = dither+0.333;        
     
     //Синусный дисторт UV (step 2)
     float sineDistortion = sin(uv.y*2000.)*0.005;
 
     //Сэмпл изображения.
-    //                                  Абберация от трекинга               Статичная       Синусный дисторт
+    //                                  Абберация от трекинга                Статичная       Синусный дисторт
     float r = texture2D(u_texture_0,uv  -one*chromaScanLinesAmp*ditherR      -one*chromaAmp  +one*sineDistortion).r;
-    float g = texture2D(u_texture_0,uv  -one*chromaScanLinesAmp*0.5*ditherG                  +one*sineDistortion).g;
-    float b = texture2D(u_texture_0,uv                                      +one*chromaAmp  +one*sineDistortion).b;
+    float g = texture2D(u_texture_0,uv  -one*chromaScanLinesAmp*ditherG                      +one*sineDistortion).g;
+    float b = texture2D(u_texture_0,uv  -one*chromaScanLinesAmp*dither       +one*chromaAmp  +one*sineDistortion).b;
     vec3 img = vec3(r,g,b);
 
     //Noise
-    vec3 colorNoise = hash23(uv+u_time);
+    vec3 colorNoise = hash23(uv+fract(u_time*500.));
     img=max(img,colorNoise*0.2);
 
     //Saturate
